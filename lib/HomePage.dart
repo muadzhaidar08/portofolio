@@ -1,24 +1,23 @@
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'project_model.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'sertifikat_model.dart';
 import 'skill_model.dart';
-import 'dart:ui';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomepageState extends State<Homepage> {
-  final firestore = FirebaseFirestore.instance;
+class _HomePageState extends State<HomePage> {
   late final Future<List<Project>> _projectsFuture;
   late final Future<List<Certificate>> _certificatesFuture;
   late final Future<List<Skill>> _skillsFuture;
@@ -43,40 +42,36 @@ class _HomepageState extends State<Homepage> {
 
   Future<List<Project>> _fetchProjects() async {
     try {
-      final snapshot = await firestore.collection('projects').get();
-      final projects = snapshot.docs.map((doc) {
-        return Project.fromJson(doc.data());
-      }).toList();
-      return projects;
+      final String response =
+          await rootBundle.loadString('asset/data/projects.json');
+      final List<dynamic> data = json.decode(response);
+      return data.map((json) => Project.fromJson(json)).toList();
     } catch (e) {
-      print('Error fetching projects from Firestore: $e');
+      print("Error fetching local projects: $e");
       return [];
     }
   }
 
   Future<List<Certificate>> _fetchCertificates() async {
     try {
-      final snapshot = await firestore.collection('certificates').get();
-      final certificates = snapshot.docs.map((doc) {
-        return Certificate.fromJson(doc.data());
-      }).toList();
-      return certificates;
+      final String response =
+          await rootBundle.loadString('asset/data/certificates.json');
+      final List<dynamic> data = json.decode(response);
+      return data.map((json) => Certificate.fromJson(json)).toList();
     } catch (e) {
-      print('Error fetching certificates from Firestore');
+      print("Error fetching local certificates: $e");
       return [];
     }
   }
 
   Future<List<Skill>> _fetchSkills() async {
     try {
-      final snapshot = await firestore.collection('skills').get();
-      final skills = snapshot.docs.map((doc) {
-        return Skill.fromJson(doc.data());
-      }).toList();
-      return skills;
+      final String response =
+          await rootBundle.loadString('asset/data/skills.json');
+      final List<dynamic> data = json.decode(response);
+      return data.map((json) => Skill.fromJson(json)).toList();
     } catch (e) {
-      print('Error fetching skills from Firestore');
-      ;
+      print("Error fetching local skills: $e");
       return [];
     }
   }
@@ -98,18 +93,40 @@ class _HomepageState extends State<Homepage> {
 
   IconData _getIconData(String iconName) {
     switch (iconName.toLowerCase()) {
+      case 'rocket':
+        return Icons.rocket_launch;
+      case 'palette':
+        return Icons.color_lens;
+      case 'music':
+        return Icons.music_note;
+      case 'list':
+        return FontAwesomeIcons.listCheck;
+      case 'chat':
+        return FontAwesomeIcons.commentDots;
+      case 'youtube':
+        return FontAwesomeIcons.youtube;
       case 'flutter':
         return FontAwesomeIcons.flutter;
       case 'dart':
         return FontAwesomeIcons.dartLang;
       case 'firebase':
         return FontAwesomeIcons.fire;
+      case 'html':
+        return FontAwesomeIcons.html5;
+      case 'css':
+        return FontAwesomeIcons.css3Alt;
+      case 'javascript':
+        return FontAwesomeIcons.js;
+      case 'git':
+        return FontAwesomeIcons.gitAlt;
       case 'github':
         return FontAwesomeIcons.github;
       case 'figma':
         return FontAwesomeIcons.figma;
       case 'supabase':
         return FontAwesomeIcons.database;
+      case 'python':
+        return FontAwesomeIcons.python;
       default:
         return Icons.star;
     }
@@ -133,9 +150,8 @@ class _HomepageState extends State<Homepage> {
                 ),
                 SizedBox(key: _skillsKey, child: buildSkillsSection(context)),
                 SizedBox(
-                  key: _certificatesKey,
-                  child: buildCertificatesSection(context),
-                ),
+                    key: _certificatesKey,
+                    child: buildCertificatesSection(context)),
                 SizedBox(
                   key: _educationKey,
                   child: buildEducationSection(context),
@@ -155,30 +171,28 @@ class _HomepageState extends State<Homepage> {
       title: Text(
         "Muadz Haidar",
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-          color: Theme.of(context).primaryColor,
-          fontFamily: GoogleFonts.poppins().fontFamily,
-          fontWeight: FontWeight.w600,
-        ),
+              color: Theme.of(context).primaryColor,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+              fontWeight: FontWeight.w600,
+            ),
       ),
       actions: [
         if (MediaQuery.of(context).size.width > 700)
           Padding(
-            padding: const EdgeInsets.only(right: 24),
+            padding: const EdgeInsets.only(right: 24.0),
             child: Row(
               children: [
                 _navButton("Home", () => _scrollToSection(_heroKey)),
-                _navButton('About', () => _scrollToSection(_aboutKey)),
+                _navButton("About", () => _scrollToSection(_aboutKey)),
                 _navButton("Projects", () => _scrollToSection(_projectsKey)),
-                _navButton('Skills', () => _scrollToSection(_skillsKey)),
+                _navButton("Skills", () => _scrollToSection(_skillsKey)),
                 _navButton(
-                  'Certificates',
-                  () => _scrollToSection(_certificatesKey),
-                ),
+                    "Certificates", () => _scrollToSection(_certificatesKey)),
                 _navButton("Education", () => _scrollToSection(_educationKey)),
                 _navButton("Contact", () => _scrollToSection(_contactKey)),
               ],
             ),
-          ),
+          )
       ],
     );
   }
@@ -189,7 +203,7 @@ class _HomepageState extends State<Homepage> {
       child: Text(
         text,
         style: TextStyle(
-          color: Color(0xFF333333).withOpacity(0.8),
+          color: const Color(0xFF333333).withOpacity(0.8),
           fontWeight: FontWeight.w600,
           fontSize: 16,
         ),
@@ -204,36 +218,38 @@ class _HomepageState extends State<Homepage> {
 
         final heroText = Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: isDesktop
-              ? CrossAxisAlignment.start
-              : CrossAxisAlignment.center,
+          crossAxisAlignment:
+              isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           children: [
             Text(
               "Junior Flutter Developer",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w600,
-              ),
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             DefaultTextStyle(
               style: isDesktop
-                ? Theme.of(context).textTheme.displaySmall!
-                : Theme.of(context).textTheme.headlineMedium!,
+                  ? Theme.of(context).textTheme.displaySmall!
+                  : Theme.of(context).textTheme.headlineMedium!,
               textAlign: isDesktop ? TextAlign.left : TextAlign.center,
               child: AnimatedTextKit(
                 animatedTexts: [
-                  TyperAnimatedText(
+                  TypewriterAnimatedText(
                     "Halo, Gw Muadz Haidar",
-                    speed: Duration(milliseconds: 100),
+                    speed: const Duration(milliseconds: 100),
+                  ),
+                  TypewriterAnimatedText(
+                    "Membangun Aplikasi Modern",
+                    speed: const Duration(milliseconds: 100),
                   ),
                 ],
                 repeatForever: true,
-                pause: Duration(milliseconds: 2000),
+                pause: const Duration(milliseconds: 2000),
               ),
             ),
-            SizedBox(height: 24),
-
+            const SizedBox(height: 24),
             Text(
               "Gw adalah seorang junior flutter developer, selamat datang di portofolio gw!!!",
               style: Theme.of(
@@ -241,19 +257,35 @@ class _HomepageState extends State<Homepage> {
               ).textTheme.bodyLarge?.copyWith(fontSize: 18),
               textAlign: isDesktop ? TextAlign.left : TextAlign.center,
             ),
-            SizedBox(height: 32),
-            OutlinedButton(
-              onPressed: () => _scrollToSection(_projectsKey),
-              child: const Text("Lihat Proyek Saya"),
+            const SizedBox(height: 32),
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              alignment: isDesktop ? WrapAlignment.start : WrapAlignment.center,
+              children: [
+                OutlinedButton(
+                  onPressed: () => _scrollToSection(_projectsKey),
+                  child: const Text("Lihat Proyek"),
+                ),
+                OutlinedButton(
+                  onPressed: () => _scrollToSection(_certificatesKey),
+                  child: const Text("Lihat Sertifikat"),
+                ),
+                OutlinedButton(
+                  onPressed: () => _scrollToSection(_skillsKey),
+                  child: const Text("Lihat Skill"),
+                ),
+              ],
             ),
           ],
         );
+
         final heroImage = Stack(
           alignment: Alignment.center,
           children: [
             AnimatedContainer(
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
               width: 380,
               height: 380,
               decoration: BoxDecoration(
@@ -262,9 +294,8 @@ class _HomepageState extends State<Homepage> {
                   colors: _isProfileHovered
                       ? [Colors.purple, Colors.blue, Colors.green, Colors.red]
                       : [Colors.blue, Colors.green, Colors.red, Colors.purple],
-                  begin: _isProfileHovered
-                      ? Alignment.topLeft
-                      : Alignment.bottomRight,
+                  begin:
+                      _isProfileHovered ? Alignment.topLeft : Alignment.bottomRight,
                   end: _isProfileHovered
                       ? Alignment.bottomRight
                       : Alignment.topLeft,
@@ -276,44 +307,46 @@ class _HomepageState extends State<Homepage> {
                         : Colors.blue.withOpacity(0.5),
                     blurRadius: _isProfileHovered ? 40 : 20,
                     spreadRadius: 5,
-                  ),
+                  )
                 ],
-              ),
-            ),
-            Container(
-              width: 380,
-              height: 380,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).primaryColor.withOpacity(0.1),
               ),
             ),
             MouseRegion(
               onEnter: (_) => setState(() => _isProfileHovered = true),
               onExit: (_) => setState(() => _isProfileHovered = false),
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 curve: Curves.easeOut,
                 transform: Matrix4.translationValues(
                   _isProfileHovered ? -15 : 0,
                   _isProfileHovered ? -20 : 0,
                   0,
-                )..rotateZ(_isProfileHovered ? 0.03 : 0),
-                child: Padding(
-                  padding: EdgeInsets.only(top: isDesktop ? 0 : 32),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      'asset/gw.JPG',
+                )..rotateZ(_isProfileHovered ? 0.05 : 0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
                       width: 350,
                       height: 350,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        height: 350,
-                        width: 350,
-                        color: Colors.grey.shade200,
-                        child: Center(
-                          child: Icon(Icons.broken_image, color: Colors.grey),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.3),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Image.asset(
+                        'asset/gw.JPG',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: 350,
+                          height: 350,
+                          color: Colors.grey.shade200,
+                          child: const Center(
+                            child: Icon(Icons.broken_image, color: Colors.grey),
+                          ),
                         ),
                       ),
                     ),
@@ -339,6 +372,7 @@ class _HomepageState extends State<Homepage> {
             ),
           ],
         );
+
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
           height: MediaQuery.of(context).size.height * 1.0,
@@ -351,7 +385,7 @@ class _HomepageState extends State<Homepage> {
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [heroImage, SizedBox(height: 32), heroText],
+                  children: [heroImage, const SizedBox(height: 32), heroText],
                 ),
         );
       },
@@ -360,20 +394,23 @@ class _HomepageState extends State<Homepage> {
 
   Widget buildAboutMeSection(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 80),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
       width: double.infinity,
       color: Colors.white,
       child: Column(
         children: [
-          Text("Tentang Saya", style: Theme.of(context).textTheme.displaySmall),
-          SizedBox(height: 16),
+          Text(
+            "Tentang Saya",
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
+          const SizedBox(height: 16),
           Text(
             "Beberapa hal tentang gw",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          SizedBox(height: 48),
+          const SizedBox(height: 48),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 800),
+            constraints: const BoxConstraints(maxWidth: 800),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -382,16 +419,16 @@ class _HomepageState extends State<Homepage> {
                   textAlign: TextAlign.justify,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   "Di luar coding, saya sangat suka investasi tubuh untuk membangun pribadi yang kuat dan lebih berprinsip. Mari terhubung",
                   textAlign: TextAlign.justify,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 OutlinedButton(
                   onPressed: () => _scrollToSection(_contactKey),
-                  child: Text("Hubungi Saya"),
+                  child: const Text("Hubungi Saya"),
                 ),
               ],
             ),
@@ -412,12 +449,12 @@ class _HomepageState extends State<Homepage> {
             "Proyek Pilihan",
             style: Theme.of(context).textTheme.displaySmall,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             "Beberapa Proyek yang telah dibangun",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          SizedBox(height: 48),
+          const SizedBox(height: 48),
           FutureBuilder<List<Project>>(
             future: _projectsFuture,
             builder: (context, snapshot) {
@@ -425,7 +462,7 @@ class _HomepageState extends State<Homepage> {
                 return const CircularProgressIndicator();
               }
               if (snapshot.hasError) {
-                return Text("Gagal memuat proyek");
+                return Text("Gagal memuat proyek: ${snapshot.error}");
               }
               final projects = snapshot.data;
               if (projects == null || projects.isEmpty) {
@@ -455,7 +492,7 @@ class _HomepageState extends State<Homepage> {
 
   Widget buildSkillsSection(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 80),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
       width: double.infinity,
       color: Colors.white,
       child: Column(
@@ -464,21 +501,24 @@ class _HomepageState extends State<Homepage> {
             "Keahlian Saya",
             style: Theme.of(context).textTheme.displaySmall,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             "Teknologi dan tools yang gw kuasai",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          SizedBox(height: 48),
-          FutureBuilder(
+          const SizedBox(height: 48),
+          FutureBuilder<List<Skill>>(
             future: _skillsFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Gagal memuat skill");
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text("Gagal memuat skill: ${snapshot.error}");
               }
               final skills = snapshot.data;
               if (skills == null || skills.isEmpty) {
-                return Text("belum ada skill untuk ditampilkan");
+                return const Text("belum ada skill untuk ditampilkan");
               }
               return Wrap(
                 spacing: 24,
@@ -552,7 +592,7 @@ class _HomepageState extends State<Homepage> {
 
   Widget buildEducationSection(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 80),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
       width: double.infinity,
       color: Colors.white,
       child: Column(
@@ -561,12 +601,12 @@ class _HomepageState extends State<Homepage> {
             "Riwayat Pendidikan",
             style: Theme.of(context).textTheme.displaySmall,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             "Perjalanan akademis yang telah saya tempuh.",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          SizedBox(height: 48),
+          const SizedBox(height: 48),
           Wrap(
             spacing: 24,
             runSpacing: 24,
@@ -597,13 +637,13 @@ class _HomepageState extends State<Homepage> {
       child: Column(
         children: [
           Text("Hubungi Saya", style: Theme.of(context).textTheme.displaySmall),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             "Mari berkolaborasi! Hubungi saya melalui:",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          SizedBox(height: 32),
+          const SizedBox(height: 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -611,12 +651,12 @@ class _HomepageState extends State<Homepage> {
                 icon: FontAwesomeIcons.github,
                 url: 'https://github.com/muadzhaidar08',
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               SocialButton(
                 icon: FontAwesomeIcons.linkedin,
                 url: 'https://www.linkedin.com/in/ahmad-muadz-haidar/',
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               SocialButton(
                 icon: FontAwesomeIcons.envelope,
                 url: 'mailto:muadzhaidar08@gmail.com',
@@ -630,13 +670,13 @@ class _HomepageState extends State<Homepage> {
 
   Widget buildFooter(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       width: double.infinity,
-      color: Color(0xFF333333),
+      color: const Color(0xFF333333),
       child: Text(
         "© ${DateTime.now().year} Muadz Haidar. Dibuat dengan Hati 💙",
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white70),
+        style: const TextStyle(color: Colors.white70),
       ),
     );
   }
@@ -656,10 +696,11 @@ class EducationCard extends StatelessWidget {
     this.icon = Icons.school,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: 350,
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -669,7 +710,7 @@ class EducationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, size: 30, color: Theme.of(context).primaryColor),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -680,14 +721,14 @@ class EducationCard extends StatelessWidget {
                     context,
                   ).textTheme.headlineSmall?.copyWith(fontSize: 22),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   major,
                   style: Theme.of(
                     context,
                   ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   years,
                   style: Theme.of(
@@ -724,13 +765,13 @@ class ProjectCard extends StatefulWidget {
 class _ProjectCardState extends State<ProjectCard> {
   bool isHovered = false;
 
-  Widget _buildPlaceHolder() {
+  Widget _buildPlaceholder() {
     return Container(
       height: 180,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       ),
       child: Center(
         child: Icon(Icons.code, size: 40, color: Colors.grey.shade400),
@@ -747,7 +788,7 @@ class _ProjectCardState extends State<ProjectCard> {
         onTap: widget.onTap,
         borderRadius: BorderRadius.circular(12),
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           width: 350,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -756,14 +797,14 @@ class _ProjectCardState extends State<ProjectCard> {
             boxShadow: [
               isHovered
                   ? BoxShadow(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor.withOpacity(0.15),
                       blurRadius: 20,
-                      offset: Offset(0, 10),
+                      offset: const Offset(0, 10),
                     )
                   : BoxShadow(
                       color: Colors.black.withOpacity(0.08),
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
+                      blurRadius: 12,
+                      offset: const Offset(0, 5),
                     ),
             ],
           ),
@@ -772,23 +813,21 @@ class _ProjectCardState extends State<ProjectCard> {
             children: [
               if (widget.imagePath != null && widget.imagePath!.isNotEmpty)
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(12),
-                  ),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(12)),
                   child: Image.asset(
                     widget.imagePath!,
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) =>
-                        _buildPlaceHolder(),
+                        _buildPlaceholder(),
                   ),
                 )
               else
-                _buildPlaceHolder(),
-
+                _buildPlaceholder(),
               Padding(
-                padding: EdgeInsets.all(24),
+                padding: const EdgeInsets.all(24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -796,7 +835,7 @@ class _ProjectCardState extends State<ProjectCard> {
                       widget.title,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     SizedBox(
                       height: 50,
                       child: Text(
@@ -806,7 +845,7 @@ class _ProjectCardState extends State<ProjectCard> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       children: [
                         Text(
@@ -816,7 +855,7 @@ class _ProjectCardState extends State<ProjectCard> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Icon(
                           Icons.arrow_forward,
                           size: 18,
@@ -840,7 +879,7 @@ class SkillCard extends StatelessWidget {
   final IconData iconData;
 
   const SkillCard({Key? key, required this.name, required this.iconData})
-    : super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -955,9 +994,8 @@ class _CertificateCardState extends State<CertificateCard> {
             children: [
               if (widget.imageUrl != null && widget.imageUrl!.isNotEmpty)
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(12),
-                  ),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(12)),
                   child: Image.asset(
                     widget.imageUrl!,
                     height: 150,
@@ -982,8 +1020,8 @@ class _CertificateCardState extends State<CertificateCard> {
                     Text(
                       widget.issuer,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     Text(
                       widget.date,
@@ -1029,7 +1067,7 @@ class SocialButton extends StatefulWidget {
   final String url;
 
   const SocialButton({Key? key, required this.icon, required this.url})
-    : super(key: key);
+      : super(key: key);
 
   @override
   State<SocialButton> createState() => _SocialButtonState();
@@ -1048,7 +1086,7 @@ class _SocialButtonState extends State<SocialButton> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).primaryColor;
-    final onSurfaceColor = Color(0xFF333333);
+    const onSurfaceColor = Color(0xFF333333);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),

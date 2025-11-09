@@ -1,0 +1,8 @@
+[
+  { "name": "Flutter", "icon_name": "flutter" },
+  { "name": "Dart", "icon_name": "dart" },
+  { "name": "Firebase", "icon_name": "firebase" },
+  { "name": "Supabase", "icon_name": "supabase" },
+  { "name": "GitHub", "icon_name": "github" },
+  { "name": "Figma", "icon_name": "figma" }
+]

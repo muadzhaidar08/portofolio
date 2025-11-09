@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Figma Design",
+    "issuer": "Udemy",
+    "date": "Sept 8, 2025",
+    "image_url": "asset/images/figma.jpg"
+  },
+  {
+    "title": "TOEFL Simulation",
+    "issuer": "Brighton English",
+    "date": "Dec, 09, 2024",
+    "image_url": "asset/images/inggris.png"
+  },
+  {
+    "title": "Design Competition",
+    "issuer": "BEMFEBUNS",
+    "date": "Nov 18, 2023",
+    "image_url": "asset/images/design.png"
+  },
+  {
+    "title": "OSSN (Olimpiade Sains)",
+    "issuer": "Penyelenggara OSSN",
+    "date": "2023",
+    "image_url": "asset/images/ossn.jpg"
+  },
+  {
+    "title": "Sertifikat Tahfidz",
+    "issuer": "Lembaga Tahfidz",
+    "date": "2022",
+    "image_url": "asset/images/tahfidz.PNG"
+  }
+]

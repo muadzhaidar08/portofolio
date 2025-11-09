@@ -1,0 +1,23 @@
+[
+  {
+    "title": "YoursMessage",
+    "description": "Aplikasi chat pertama yang saya bangun",
+    "project_url": "https://github.com/muadzhaidar08/app-chat",
+    "image": "asset/images/appchat.jpg",
+    "icon_name": "chat"
+  },
+  {
+    "title": "ToDoList",
+    "description": "Aplikasi ini bisa digunakan untuk merekap apa saja...",
+    "project_url": "https://github.com/muadzhaidar08/todolist",
+    "image": "asset/images/ToDoList.png",
+    "icon_name": "list"
+  },
+  {
+    "title": "YouTube Clone",
+    "description": "Kloning UI YouTube untuk melatih skill layout Flutter.",
+    "project_url": "https://github.com/muadzhaidar08",
+    "image": "asset/images/ytclone.png",
+    "icon_name": "youtube"
+  }
+]

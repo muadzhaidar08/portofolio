@@ -1,31 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portofolio_website/HomePage.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  const apiKey = String.fromEnvironment('FLUTTER_PUBLIC_API_KEY');
-  const authDomain = String.fromEnvironment('FLUTTER_PUBLIC_AUTH_DOMAIN');
-  const projectId = String.fromEnvironment('FLUTTER_PUBLIC_PROJECT_ID');
-  const storageBucket = String.fromEnvironment('FLUTTER_PUBLIC_STORAGE_BUCKET');
-  const messagingSenderId = String.fromEnvironment(
-    'FLUTTER_PUBLIC_MESSAGING_SENDER_ID',
-  );
-  const appId = String.fromEnvironment('FLUTTER_PUBLIC_APP_ID');
-  const measurementId = String.fromEnvironment('FLUTTER_PUBLIC_MEASUREMENT_ID');
-
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: apiKey,
-      authDomain: authDomain,
-      projectId: projectId,
-      storageBucket: storageBucket,
-      messagingSenderId: messagingSenderId,
-      appId: appId,
-      measurementId: measurementId,
-    ),
-  );
 
   runApp(const PortofolioApp());
 }
@@ -108,7 +85,7 @@ class PortofolioApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const Homepage(),
+      home: const HomePage(),
     );
   }
 }
