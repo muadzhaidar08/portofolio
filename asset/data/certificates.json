@@ -19,14 +19,14 @@
   },
   {
     "title": "OSSN (Olimpiade Sains)",
-    "issuer": "Penyelenggara OSSN",
+    "issuer": "Gantari",
     "date": "2023",
     "image_url": "asset/images/ossn.jpg"
   },
   {
-    "title": "Sertifikat Tahfidz",
-    "issuer": "Lembaga Tahfidz",
-    "date": "2022",
+    "title": "Diniyyah",
+    "issuer": "IDN Boarding School",
+    "date": "2021",
     "image_url": "asset/images/tahfidz.PNG"
   }
 ]

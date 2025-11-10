@@ -237,7 +237,7 @@ class _HomePageState extends State<HomePage> {
               child: AnimatedTextKit(
                 animatedTexts: [
                   TypewriterAnimatedText(
-                    "Halo, Gw Muadz Haidar",
+                    "Halo, Saya Muadz Haidar",
                     speed: const Duration(milliseconds: 100),
                   ),
                   TypewriterAnimatedText(
@@ -251,7 +251,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 24),
             Text(
-              "Gw adalah seorang junior flutter developer, selamat datang di portofolio gw!!!",
+              "Saya adalah seorang junior flutter developer, selamat datang di portofolio saya!!!",
               style: Theme.of(
                 context,
               ).textTheme.bodyLarge?.copyWith(fontSize: 18),
@@ -405,7 +405,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 16),
           Text(
-            "Beberapa hal tentang gw",
+            "Beberapa hal tentang Saya",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 48),
@@ -415,7 +415,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Halo! Nama gw Ahmad Muadz Haidar, Gw adalah seorang Junior Flutter Developer, Gw membangun aplikasi iOS dan Android menggunakan Flutter dan Dart.",
+                  "Halo! Nama saya Ahmad Muadz Haidar, Saya adalah seorang Junior Flutter Developer, Saya membangun aplikasi iOS dan Android menggunakan Flutter dan Dart.",
                   textAlign: TextAlign.justify,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
@@ -503,7 +503,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 16),
           Text(
-            "Teknologi dan tools yang gw kuasai",
+            "Teknologi dan tools yang saya kuasai",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 48),
