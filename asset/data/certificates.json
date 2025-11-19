@@ -8,7 +8,7 @@
   {
     "title": "TOEFL Simulation",
     "issuer": "Brighton English",
-    "date": "Dec, 09, 2024",
+    "date": "Dec 09, 2024",
     "image_url": "asset/images/inggris.png"
   },
   {
@@ -28,5 +28,11 @@
     "issuer": "IDN Boarding School",
     "date": "2021",
     "image_url": "asset/images/tahfidz.PNG"
+  },
+  {
+    "title": "OSIS 2024/2025",
+    "issuer": "Rabbaanii Islamic School",
+    "date": "April 16, 2025",
+    "image_url": "asset/images/osis.jpg"
   }
 ]
