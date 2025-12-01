@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
               isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           children: [
             Text(
-              "Junior Flutter Developer",
+              "Flutter Developer",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w600,
