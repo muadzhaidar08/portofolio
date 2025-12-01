@@ -80,6 +80,8 @@ flutter:
     - asset/data/projects.json
     - asset/data/certificates.json
     - asset/data/skills.json
+    - asset/images/unisco.jpg   
+    - asset/images/workflow.jpg
     
     
     
